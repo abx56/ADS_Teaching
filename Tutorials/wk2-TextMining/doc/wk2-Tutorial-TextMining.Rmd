@@ -1,8 +1,8 @@
 ---
 title: "Tutorial (week 2) B: text mining"
 output: html_notebook
-    toc: true
     toc_depth: 2
+    toc: true
 ---
 
 # Step 0: check and install needed packages. Load the libraries and functions. 
@@ -96,7 +96,7 @@ speech.list=rbind(inaug.list, nomin.list, farewell.list)
 speech.list$type=c(rep("inaug", nrow(inaug.list)),
                    rep("nomin", nrow(nomin.list)),
                    rep("farewell", nrow(farewell.list)))
-speech.url=rbind(inaug, nomin, farewell)
+speech.url=rbind(inaug, nomin[-47,], farewell)
 speech.list=cbind(speech.list, speech.url)
 ```
 
@@ -162,6 +162,7 @@ We will use sentences as units of analysis for this project, as sentences are na
 We assign an sequential id to each sentence in a speech (`sent.id`) and also calculated the number of words in each sentence as *sentence length* (`word.count`).
 
 ```{r, message=FALSE, warning=FALSE}
+# runs for a long time
 sentence.list=NULL
 for(i in 1:nrow(speech.list)){
   sentences=sent_detect(speech.list$fulltext[i],

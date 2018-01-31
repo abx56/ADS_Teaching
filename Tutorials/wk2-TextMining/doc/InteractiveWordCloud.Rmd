@@ -40,7 +40,8 @@ print(R.version)
 
 # Step 1 - Read in the speeches
 ```{r}
-folder.path="../data/inaugurals/"
+#folder.path="/Users/fanerror/GitHub/Columbia/ADS_Teaching/Tutorials/wk2-TextMining/data/fulltext/"
+folder.path="/Users/fanerror/GitHub/Columbia/ADS_Teaching/Projects_StarterCodes/Project1-RNotebook/data/InauguralSpeeches"
 speeches=list.files(path = folder.path, pattern = "*.txt")
 prex.out=substr(speeches, 6, nchar(speeches)-4)
 
@@ -92,62 +93,62 @@ dtm <- DocumentTermMatrix(ff.all,
 ff.dtm=tidy(dtm)
 ```
 
-#Step 5- Interactive visualize important words in individual speeches
-```{r, warning=FALSE}
-library(shiny)
+<!-- #Step 5- Interactive visualize important words in individual speeches -->
+<!-- ```{r, warning=FALSE} -->
+<!-- library(shiny) -->
 
-shinyApp(
-    ui = fluidPage(
-      fluidRow(style = "padding-bottom: 20px;",
-        column(4, selectInput('speech1', 'Speech 1', speeches, selected=speeches[5])),
-        column(4, selectInput('speech2', 'Speech 2', speeches, selected=speeches[9])),
-        column(4, sliderInput('nwords', 'Number of words', 3, min = 20, 
-                              max = 200, value=100, step = 20))
-      ),
-      fluidRow(
-        plotOutput('wordclouds', height = "400px")
-      )
-    ),
+<!-- shinyApp( -->
+<!--     ui = fluidPage( -->
+<!--       fluidRow(style = "padding-bottom: 20px;", -->
+<!--         column(4, selectInput('speech1', 'Speech 1', speeches, selected=speeches[5])), -->
+<!--         column(4, selectInput('speech2', 'Speech 2', speeches, selected=speeches[9])), -->
+<!--         column(4, sliderInput('nwords', 'Number of words', 3, min = 20,  -->
+<!--                               max = 200, value=100, step = 20)) -->
+<!--       ), -->
+<!--       fluidRow( -->
+<!--         plotOutput('wordclouds', height = "400px") -->
+<!--       ) -->
+<!--     ), -->
 
-    server = function(input, output, session) {
-      # Combine the selected variables into a new data frame
-      selectedData <- reactive({
-        list(dtm.term1=ff.dtm$term[ff.dtm$document==as.character(which(speeches == input$speech1))],
-             dtm.count1=ff.dtm$count[ff.dtm$document==as.character(which(speeches == input$speech1))],
-             dtm.term2=ff.dtm$term[ff.dtm$document==as.character(which(speeches == input$speech2))],
-             dtm.count2=ff.dtm$count[ff.dtm$document==as.character(which(speeches == input$speech2))])
-      })
+<!--     server = function(input, output, session) { -->
+<!--       # Combine the selected variables into a new data frame -->
+<!--       selectedData <- reactive({ -->
+<!--         list(dtm.term1=ff.dtm$term[ff.dtm$document==as.character(which(speeches == input$speech1))], -->
+<!--              dtm.count1=ff.dtm$count[ff.dtm$document==as.character(which(speeches == input$speech1))], -->
+<!--              dtm.term2=ff.dtm$term[ff.dtm$document==as.character(which(speeches == input$speech2))], -->
+<!--              dtm.count2=ff.dtm$count[ff.dtm$document==as.character(which(speeches == input$speech2))]) -->
+<!--       }) -->
 
-      output$wordclouds <- renderPlot(height = 400, {
-        par(mfrow=c(1,2), mar = c(0, 0, 3, 0))
-        wordcloud(selectedData()$dtm.term1, 
-                  selectedData()$dtm.count1,
-              scale=c(4,0.5),
-              max.words=input$nwords,
-              min.freq=1,
-              random.order=FALSE,
-              rot.per=0,
-              use.r.layout=FALSE,
-              random.color=FALSE,
-              colors=brewer.pal(10,"Blues"), 
-            main=input$speech1)
-        wordcloud(selectedData()$dtm.term2, 
-                  selectedData()$dtm.count2,
-              scale=c(4,0.5),
-              max.words=input$nwords,
-              min.freq=1,
-              random.order=FALSE,
-              rot.per=0,
-              use.r.layout=FALSE,
-              random.color=FALSE,
-              colors=brewer.pal(10,"Blues"), 
-            main=input$speech2)
-      })
-    },
+<!--       output$wordclouds <- renderPlot(height = 400, { -->
+<!--         par(mfrow=c(1,2), mar = c(0, 0, 3, 0)) -->
+<!--         wordcloud(selectedData()$dtm.term1,  -->
+<!--                   selectedData()$dtm.count1, -->
+<!--               scale=c(4,0.5), -->
+<!--               max.words=input$nwords, -->
+<!--               min.freq=1, -->
+<!--               random.order=FALSE, -->
+<!--               rot.per=0, -->
+<!--               use.r.layout=FALSE, -->
+<!--               random.color=FALSE, -->
+<!--               colors=brewer.pal(10,"Blues"),  -->
+<!--             main=input$speech1) -->
+<!--         wordcloud(selectedData()$dtm.term2,  -->
+<!--                   selectedData()$dtm.count2, -->
+<!--               scale=c(4,0.5), -->
+<!--               max.words=input$nwords, -->
+<!--               min.freq=1, -->
+<!--               random.order=FALSE, -->
+<!--               rot.per=0, -->
+<!--               use.r.layout=FALSE, -->
+<!--               random.color=FALSE, -->
+<!--               colors=brewer.pal(10,"Blues"),  -->
+<!--             main=input$speech2) -->
+<!--       }) -->
+<!--     }, -->
 
-    options = list(height = 600)
-)
-```
+<!--     options = list(height = 600) -->
+<!-- ) -->
+<!-- ``` -->
 
 
 
